@@ -1,19 +1,21 @@
 'use strict';
 
+let env = process.env;
+
 exports.oss = {
   clients: {
     oss1: {
-      accessKeyId: 'qFTrKdsqOdm9RJtZ',
-      accessKeySecret: 'I8X382yoQzmJ4OjUqH1IylPP774Jic',
+      accessKeyId: env.ALI_SDK_OSS_ID,
+      accessKeySecret: env.ALI_SDK_OSS_SECRET,
     },
     oss2: {
-      accessKeyId: 'qFTrKdsqOdm9RJtZ',
-      accessKeySecret: 'I8X382yoQzmJ4OjUqH1IylPP774Jic',
+      accessKeyId: env.ALI_SDK_OSS_ID,
+      accessKeySecret: env.ALI_SDK_OSS_SECRET,
     },
   },
 
   default: {
-    bucket: 'alipay-rmsdeploy-dev-assets',
-    endpoint: 'oss-cn-hangzhou-zmf.aliyuncs.com',
+    endpoint: env.ALI_SDK_OSS_ENDPOINT,
+    bucket: 'js-sdk-bucket-sts',
   },
 };

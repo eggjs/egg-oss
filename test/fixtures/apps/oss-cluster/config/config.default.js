@@ -1,15 +1,17 @@
 'use strict';
 
+let env = process.env;
+
 exports.oss = {
   cluster: [{
-    accessKeyId: 'qFTrKdsqOdm9RJtZ',
-    accessKeySecret: 'I8X382yoQzmJ4OjUqH1IylPP774Jic',
-    bucket: 'alipay-rmsdeploy-dev-assets',
-    endpoint: 'oss-cn-hangzhou-zmf.aliyuncs.com',
+    accessKeyId: env.ALI_SDK_OSS_ID,
+    accessKeySecret: env.ALI_SDK_OSS_SECRET,
+    endpoint: env.ALI_SDK_OSS_ENDPOINT,
+    bucket: 'js-sdk-bucket-sts',
   }, {
-    accessKeyId: 'qFTrKdsqOdm9RJtZ',
-    accessKeySecret: 'I8X382yoQzmJ4OjUqH1IylPP774Jic',
-    bucket: 'alipay-rmsdeploy-dev-assets',
-    endpoint: 'oss-cn-hangzhou-zmf.aliyuncs.com',
+    accessKeyId: env.ALI_SDK_OSS_ID,
+    accessKeySecret: env.ALI_SDK_OSS_SECRET,
+    endpoint: env.ALI_SDK_OSS_ENDPOINT,
+    bucket: 'js-sdk-bucket-sts',
   }]
 };
