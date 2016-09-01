@@ -56,7 +56,6 @@ exports.oss = {
 
 // cluster oss bucket
 // need to config all bucket information under cluster
-
 exports.oss = {
   client: {
     cluster: [{
