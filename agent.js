@@ -3,5 +3,8 @@
 const oss = require('./lib/oss');
 
 module.exports = agent => {
-  oss(agent);
+  const useAgent = agent.config.oss.useAgent;
+  if (useAgent) {
+    oss(agent);
+  }
 };
