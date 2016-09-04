@@ -16,6 +16,6 @@ exports.oss = {
 
   default: {
     endpoint: env.ALI_SDK_OSS_ENDPOINT,
-    bucket: 'js-sdk-bucket-sts',
+    bucket:env.ALI_SDK_OSS_BUCKET
   },
 };

@@ -18,7 +18,6 @@ module.exports = function(app) {
     const name = 'chair-oss-test-upload-' + process.version + '-' + Date.now();
     this.body = yield this.oss.put(name, fs.createReadStream(__filename));
   });
-
   app.get('/upload', function*() {
     this.set('x-csrf', this.csrf);
     yield this.render('upload.html');

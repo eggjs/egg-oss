@@ -39,7 +39,7 @@ describe('test/oss.test.js', () => {
         baseDir: 'apps/oss-missing-config',
       });
       app.on('error', err => {
-        err.message.should.equal('[egg:oss] Must set `accessKeyId` and `accessKeySecret` in oss\'s config');
+        err.message.should.equal('[egg-oss] Must set `accessKeyId` and `accessKeySecret` in oss\'s config');
         done();
       });
     });
@@ -67,7 +67,6 @@ describe('test/oss.test.js', () => {
       request(app.callback())
       .get('/uploadtest')
       .expect(function(res) {
-        console.log(res);
         lastUploadFileName = res.body.name;
         res.body.name.should.be.a.String;
         res.body.url.should.match(/^https?:\/\/alipay\-rmsdeploy\-dev\-assets\./);
@@ -136,47 +135,13 @@ describe('test/oss.test.js', () => {
     });
 
     after(function() {
-      app.stop();
+      app.end();
     });
 
     it('should work', function(done) {
       request(app)
         .get('/agent')
         .expect(200, 'OK', done);
-    });
-  });
-
-  describe('oss with new config style', () => {
-    let app;
-    let lastUploadFileName;
-    before(function(done) {
-      app = mm.app({
-        baseDir: 'apps/oss-new',
-      });
-      app.ready(done);
-    });
-
-    after(function* () {
-      if (lastUploadFileName) {
-        yield app.oss.delete(lastUploadFileName);
-      }
-    });
-
-    it('should upload file stream to oss', function(done) {
-      done = pedding(2, done);
-      request(app.callback())
-      .get('/uploadtest')
-      .expect(function(res) {
-        lastUploadFileName = res.body.name;
-        res.body.name.should.be.a.String;
-        res.body.url.should.match(/^https?:\/\/alipay\-rmsdeploy\-dev\-assets\./);
-        // oss url 能够被访问到
-        urllib.request(res.body.url, function(err, _, res) {
-          res.status.should.equal(200);
-          done(err);
-        });
-      })
-      .expect(200, done);
     });
   });
 
