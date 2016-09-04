@@ -1,6 +1,6 @@
 {
   "name": "egg-oss",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "oss plugin for egg",
   "eggPlugin": {
     "name": "oss"
