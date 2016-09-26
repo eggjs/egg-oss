@@ -6,6 +6,6 @@ exports.oss = {
 	client: {
 		accessKeyId: env.ALI_SDK_OSS_ID,
 		endpoint: env.ALI_SDK_OSS_ENDPOINT,
-  		bucket:env.ALI_SDK_OSS_BUCKET
+  		bucket:'ali-oss-test-bucket-test99'
 	}
 };

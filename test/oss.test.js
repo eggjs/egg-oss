@@ -3,18 +3,35 @@
 const pedding = require('pedding');
 const mm = require('egg-mock');
 const request = require('supertest');
-const urllib = require('urllib');
+const oss = require('ali-oss');
+const config = require('./fixtures/apps/oss/config/config.default').oss.client;
+const assert = require('assert');
+const env = process.env;
+const region = env.ALI_SDK_OSS_REGION || 'oss-cn-hangzhou';
 
 describe('test/oss.test.js', () => {
   afterEach(mm.restore);
   describe('oss', () => {
     let app;
     let lastUploadFileName;
-    before(() => {
+    before(function* () {
+      const ossConfig = {
+        accessKeyId: config.accessKeyId,
+        accessKeySecret: config.accessKeySecret,
+        endpoint: config.endpoint,
+        region,
+        callbackServer: 'http://d.rockuw.com:4567',
+      };
+      const store = oss(ossConfig);
+      const bucket = 'ali-oss-test-bucket-test99';
+      const result = yield store.putBucket(bucket, region);
+      assert.equal(result.bucket, bucket);
+      assert.equal(result.res.status, 200);
       app = mm.app({
         baseDir: 'apps/oss',
       });
       return app.ready();
+
     });
 
     after(function* () {
@@ -29,7 +46,7 @@ describe('test/oss.test.js', () => {
         baseDir: 'apps/oss-endpoint-http',
       });
       ta.ready(function() {
-        ta.oss.options.endpoint.host.should.eql('oss-cn-hangzhou-zmf.aliyuncs.com');
+        ta.oss.options.endpoint.host.should.eql('oss-test.aliyun-inc.com');
         done();
       });
     });
@@ -53,30 +70,28 @@ describe('test/oss.test.js', () => {
 
     it('should be injected correctly', function(done) {
       request(app.callback())
-      .get('/')
-      .expect({
-        app: true,
-        ctx: true,
-        putBucket: true,
-      })
-      .expect(200, done);
+        .get('/')
+        .expect({
+          app: true,
+          ctx: true,
+          putBucket: true,
+        })
+        .expect(200, done);
     });
 
     it('should upload file stream to oss', function(done) {
       done = pedding(2, done);
       request(app.callback())
-      .get('/uploadtest')
-      .expect(function(res) {
-        lastUploadFileName = res.body.name;
-        res.body.name.should.be.a.String;
-        res.body.url.should.match(/^https?:\/\/alipay\-rmsdeploy\-dev\-assets\./);
-        // oss url 能够被访问到
-        urllib.request(res.body.url, function(err, _, res) {
-          res.status.should.equal(200);
-          done(err);
-        });
-      })
-      .expect(200, done);
+        .get('/uploadtest')
+        .expect(function(res) {
+          console.log(res.body);
+          lastUploadFileName = res.body.name;
+          res.body.name.should.be.a.String;
+          res.body.url.should.match(/^http:\/\/ali\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/);
+          res.body.res.status.should.equal(200);
+          done();
+        })
+        .expect(200, done);
     });
 
     it('should upload file stream to oss using custom init oss', function(done) {
@@ -86,18 +101,15 @@ describe('test/oss.test.js', () => {
       app.ready(() => {
         done = pedding(2, done);
         request(app.callback())
-        .get('/uploadtest')
-        .expect(function(res) {
-          lastUploadFileName = res.body.name;
-          res.body.name.should.be.a.String;
-          res.body.url.should.match(/^https?:\/\/alipay\-rmsdeploy\-dev\-assets\./);
-          // oss url 能够被访问到
-          urllib.request(res.body.url, function(err, _, res) {
-            res.status.should.equal(200);
-            done(err);
-          });
-        })
-        .expect(200, done);
+          .get('/uploadtest')
+          .expect(function(res) {
+            lastUploadFileName = res.body.name;
+            res.body.name.should.be.a.String;
+            res.body.url.should.match(/^http:\/\/ali\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/);
+            res.body.res.status.should.equal(200);
+            done();
+          })
+          .expect(200, done);
       });
     });
 
@@ -108,18 +120,15 @@ describe('test/oss.test.js', () => {
       });
       app.ready(() => {
         request(app.callback())
-        .get('/uploadtest')
-        .expect(function(res) {
-          lastUploadFileName = res.body.name;
-          res.body.name.should.be.a.String;
-          res.body.url.should.match(/^https?:\/\/alipay\-rmsdeploy\-dev\-assets\./);
-          // oss url 能够被访问到
-          urllib.request(res.body.url, function(err, _, res) {
-            res.status.should.equal(200);
-            done(err);
-          });
-        })
-        .expect(200, done);
+          .get('/uploadtest')
+          .expect(function(res) {
+            lastUploadFileName = res.body.name;
+            res.body.name.should.be.a.String;
+            res.body.url.should.match(/^http:\/\/ali\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/);
+            res.body.res.status.should.equal(200);
+            done();
+          })
+          .expect(200, done);
       });
     });
   });
@@ -164,18 +173,15 @@ describe('test/oss.test.js', () => {
     it('should upload file stream to oss', function(done) {
       done = pedding(2, done);
       request(app.callback())
-      .get('/uploadtest')
-      .expect(function(res) {
-        lastUploadFileName = res.body.name;
-        res.body.name.should.be.a.String;
-        res.body.url.should.match(/^https?:\/\/alipay\-rmsdeploy\-dev\-assets\./);
-        // oss url 能够被访问到
-        urllib.request(res.body.url, function(err, _, res) {
-          res.status.should.equal(200);
-          done(err);
-        });
-      })
-      .expect(200, done);
+        .get('/uploadtest')
+        .expect(function(res) {
+          lastUploadFileName = res.body.name;
+          res.body.name.should.be.a.String;
+          res.body.url.should.match(/^http:\/\/ali\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/);
+          res.body.res.status.should.equal(200);
+          done();
+        })
+        .expect(200, done);
     });
   });
 });

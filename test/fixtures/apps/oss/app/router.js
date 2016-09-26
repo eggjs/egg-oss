@@ -15,7 +15,7 @@ module.exports = function(app) {
   });
 
   app.get('/uploadtest', function*() {
-    const name = 'chair-oss-test-upload-' + process.version + '-' + Date.now();
+    const name = 'oss-test-upload-' + process.version + '-' + Date.now();
     this.body = yield this.oss.put(name, fs.createReadStream(__filename));
   });
   app.get('/upload', function*() {
@@ -25,7 +25,7 @@ module.exports = function(app) {
 
   app.post('/upload', function*() {
     const stream = yield this.getFileStream();
-    const name = 'chair-multipart-test/' + process.version + '-' + Date.now() + '-' + path.basename(stream.filename);
+    const name = 'multipart-test/' + process.version + '-' + Date.now() + '-' + path.basename(stream.filename);
     // 文件处理，上传到云存储等等
     const result = yield this.oss.put(name, stream);
     this.body = {
