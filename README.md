@@ -93,7 +93,8 @@ module.exports = function*() {
   const parts = this.multipart();
   let object;
   let part;
-  while ((part = yield parts) !== null) {
+  part = yield parts;
+  while (part) {
     if (part.length) {
       // arrays are busboy fields
       console.log('field: ' + part[0]);
@@ -109,6 +110,7 @@ module.exports = function*() {
       // file handle
       object = yield this.oss.put('egg-oss-demo-' + part.filename, part);
     }
+    part = yield parts;
   }
   console.log('and we are done parsing the form!');
   if (object) {
