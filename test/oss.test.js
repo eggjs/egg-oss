@@ -8,10 +8,11 @@ const config = require('./fixtures/apps/oss/config/config.default').oss.client;
 const assert = require('assert');
 const env = process.env;
 const region = env.ALI_SDK_OSS_REGION || 'oss-cn-hangzhou';
+// const prefix = process.platform + '-' + process.version + '/';
 
 describe('test/oss.test.js', () => {
   afterEach(mm.restore);
-  describe('oss', () => {
+  describe.only('oss', () => {
     let app;
     let lastUploadFileName;
     before(function* () {
@@ -22,8 +23,9 @@ describe('test/oss.test.js', () => {
         region,
         callbackServer: 'http://d.rockuw.com:4567',
       };
+      console.log(ossConfig);
       const store = oss(ossConfig);
-      const bucket = 'ali-oss-test-bucket-test99';
+      const bucket = config.bucket;
       const result = yield store.putBucket(bucket, region);
       assert.equal(result.bucket, bucket);
       assert.equal(result.res.status, 200);
@@ -31,7 +33,6 @@ describe('test/oss.test.js', () => {
         baseDir: 'apps/oss',
       });
       return app.ready();
-
     });
 
     after(function* () {
@@ -46,7 +47,7 @@ describe('test/oss.test.js', () => {
         baseDir: 'apps/oss-endpoint-http',
       });
       ta.ready(function() {
-        ta.oss.options.endpoint.host.should.eql('oss-test.aliyun-inc.com');
+        assert(ta.oss.options.endpoint.host === 'oss-test.aliyun-inc.com');
         done();
       });
     });
@@ -56,16 +57,16 @@ describe('test/oss.test.js', () => {
         baseDir: 'apps/oss-missing-config',
       });
       app.on('error', err => {
-        err.message.should.equal('[egg-oss] Must set `accessKeyId` and `accessKeySecret` in oss\'s config');
+        assert(err.message === '[egg-oss] Must set `accessKeyId` and `accessKeySecret` in oss\'s config');
         done();
       });
     });
 
     it('should be config correctly', function* () {
       const config = app.config.oss.client;
-      config.accessKeyId.should.be.a.String;
-      config.accessKeySecret.should.be.a.String;
-      config.bucket.should.be.a.String;
+      assert(typeof config.accessKeyId === 'string');
+      assert(typeof config.accessKeySecret === 'string');
+      assert(typeof config.bucket === 'string');
     });
 
     it('should be injected correctly', function(done) {
@@ -86,9 +87,9 @@ describe('test/oss.test.js', () => {
         .expect(function(res) {
           console.log(res.body);
           lastUploadFileName = res.body.name;
-          res.body.name.should.be.a.String;
-          res.body.url.should.match(/^http:\/\/ali\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/);
-          res.body.res.status.should.equal(200);
+          assert(typeof res.body.name === 'string');
+          assert(/^http:\/\/egg\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/.test(res.body.url));
+          assert(res.body.res.status === 200);
           done();
         })
         .expect(200, done);
@@ -104,9 +105,9 @@ describe('test/oss.test.js', () => {
           .get('/uploadtest')
           .expect(function(res) {
             lastUploadFileName = res.body.name;
-            res.body.name.should.be.a.String;
-            res.body.url.should.match(/^http:\/\/ali\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/);
-            res.body.res.status.should.equal(200);
+            assert(typeof res.body.name === 'string');
+            assert(/^http:\/\/egg\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/.test(res.body.url));
+            assert(res.body.res.status === 200);
             done();
           })
           .expect(200, done);
@@ -123,9 +124,9 @@ describe('test/oss.test.js', () => {
           .get('/uploadtest')
           .expect(function(res) {
             lastUploadFileName = res.body.name;
-            res.body.name.should.be.a.String;
-            res.body.url.should.match(/^http:\/\/ali\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/);
-            res.body.res.status.should.equal(200);
+            assert(typeof res.body.name === 'string');
+            assert(/^http:\/\/egg\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/.test(res.body.url));
+            assert(res.body.res.status === 200);
             done();
           })
           .expect(200, done);
@@ -176,9 +177,9 @@ describe('test/oss.test.js', () => {
         .get('/uploadtest')
         .expect(function(res) {
           lastUploadFileName = res.body.name;
-          res.body.name.should.be.a.String;
-          res.body.url.should.match(/^http:\/\/ali\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/);
-          res.body.res.status.should.equal(200);
+          assert(typeof res.body.name === 'string');
+          assert(/^http:\/\/egg\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/.test(res.body.url));
+          assert(res.body.res.status === 200);
           done();
         })
         .expect(200, done);

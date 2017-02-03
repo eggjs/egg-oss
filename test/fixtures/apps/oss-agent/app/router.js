@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  app.get('/agent', function*() {
+  app.get('/agent', function* () {
     yield wrapPromise(app);
     this.body = 'OK';
   });

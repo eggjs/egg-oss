@@ -1,6 +1,6 @@
 'use strict';
 
-let env = process.env;
+const env = process.env;
 
 exports.oss = {
   clients: {
@@ -16,6 +16,6 @@ exports.oss = {
 
   default: {
     endpoint: env.ALI_SDK_OSS_ENDPOINT,
-    bucket:'ali-oss-test-bucket-test99'
+    bucket: 'egg-oss-test-bucket-test99',
   },
 };
