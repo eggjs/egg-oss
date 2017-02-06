@@ -2,7 +2,7 @@
 
 module.exports = {
   /**
-   * OSS Singleton 实例
+   * OSS Singleton instance
    * @member Context#oss
    * @since 1.0.0
    * @see App#oss
