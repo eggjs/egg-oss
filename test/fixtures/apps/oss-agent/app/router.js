@@ -8,12 +8,10 @@ module.exports = app => {
 };
 
 function wrapPromise(app) {
-  const d = Promise.defer();
-
-  app.messenger.broadcast('oss start');
-  app.messenger.on('oss done', () => {
-    d.resolve();
+  return new Promise(resolve => {
+    app.messenger.broadcast('oss start');
+    app.messenger.on('oss done', () => {
+      resolve();
+    });
   });
-
-  return d.promise;
 }

@@ -1,21 +1,21 @@
 'use strict';
 
-const env = process.env;
+const config = Object.assign({}, require('../../../../config'));
 
 exports.oss = {
   clients: {
     oss1: {
-      accessKeyId: env.ALI_SDK_OSS_ID,
-      accessKeySecret: env.ALI_SDK_OSS_SECRET,
+      accessKeyId: config.accessKeyId,
+      accessKeySecret: config.accessKeySecret,
     },
     oss2: {
-      accessKeyId: env.ALI_SDK_OSS_ID,
-      accessKeySecret: env.ALI_SDK_OSS_SECRET,
+      accessKeyId: config.accessKeyId,
+      accessKeySecret: config.accessKeySecret,
     },
   },
 
   default: {
-    endpoint: env.ALI_SDK_OSS_ENDPOINT,
-    bucket: 'egg-oss-test-bucket-test99',
+    region: config.region,
+    bucket: config.bucket,
   },
 };

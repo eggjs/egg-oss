@@ -1,11 +1,11 @@
 'use strict';
 
-const env = process.env;
+const config = Object.assign({}, require('../../../../config'));
 
 exports.oss = {
   client: {
-    accessKeyId: env.ALI_SDK_OSS_ID,
-    endpoint: env.ALI_SDK_OSS_ENDPOINT,
-    bucket: 'egg-oss-test-bucket-test99',
+    accessKeyId: config.accessKeyId,
+    region: config.region,
+    bucket: config.bucket,
   },
 };

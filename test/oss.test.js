@@ -1,53 +1,52 @@
 'use strict';
 
+const path = require('path');
 const pedding = require('pedding');
 const mm = require('egg-mock');
 const request = require('supertest');
-const oss = require('ali-oss');
-const config = require('./fixtures/apps/oss/config/config.default').oss.client;
+const ossConfig = require('./fixtures/apps/oss/config/config.default').oss.client;
 const assert = require('assert');
-const env = process.env;
-const region = env.ALI_SDK_OSS_REGION || 'oss-cn-hangzhou';
 
 describe('test/oss.test.js', () => {
   afterEach(mm.restore);
+
   describe('oss', () => {
     let app;
     let lastUploadFileName;
     before(function* () {
-      const ossConfig = {
-        accessKeyId: config.accessKeyId,
-        accessKeySecret: config.accessKeySecret,
-        endpoint: config.endpoint,
-        region,
-        callbackServer: 'http://d.rockuw.com:4567',
-      };
-      const store = oss(ossConfig);
-      const bucket = config.bucket;
-      const result = yield store.putBucket(bucket, region);
-      assert.equal(result.bucket, bucket);
-      assert.equal(result.res.status, 200);
       app = mm.app({
         baseDir: 'apps/oss',
       });
-      return app.ready();
+      yield app.ready();
+
+      const bucket = ossConfig.bucket;
+      // const buckets = yield store.listBuckets();
+      try {
+        const result = yield app.oss.putBucket(bucket, ossConfig.region);
+        assert.equal(result.bucket, bucket);
+        assert.equal(result.res.status, 200);
+      } catch (err) {
+        // console.log('putBucket error: %s', err);
+        if (err.name !== 'BucketAlreadyExistsError') {
+          console.log('create bucket %s error: %s', bucket, err);
+          console.log(err);
+          console.log(err.stack);
+          throw err;
+        }
+      }
     });
 
     after(function* () {
       if (lastUploadFileName) {
         yield app.oss.delete(lastUploadFileName);
       }
-      app.close();
+      yield app.close();
     });
 
-    it('https?://endpoint should replace', function(done) {
-      const ta = mm.app({
-        baseDir: 'apps/oss-endpoint-http',
-      });
-      ta.ready(function() {
-        assert(ta.oss.options.endpoint.host === 'oss-test.aliyun-inc.com');
-        done();
-      });
+    it('should app.oss put file ok', function* () {
+      const result = yield app.oss.put(path.basename(__filename), __filename);
+      assert(result.url);
+      assert(result.res.status === 200);
     });
 
     it.skip('should throw error when missing endpoint or region', function(done) {
@@ -83,10 +82,9 @@ describe('test/oss.test.js', () => {
       request(app.callback())
         .get('/uploadtest')
         .expect(function(res) {
-          console.log(res.body);
           lastUploadFileName = res.body.name;
           assert(typeof res.body.name === 'string');
-          assert(/^http:\/\/egg\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/.test(res.body.url));
+          assert(/^https?:\/\/egg\-oss\-test-bucket\.\w+/.test(res.body.url));
           assert(res.body.res.status === 200);
           done();
         })
@@ -104,7 +102,7 @@ describe('test/oss.test.js', () => {
           .expect(function(res) {
             lastUploadFileName = res.body.name;
             assert(typeof res.body.name === 'string');
-            assert(/^http:\/\/egg\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/.test(res.body.url));
+            assert(/^https?:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
             assert(res.body.res.status === 200);
             done();
           })
@@ -123,7 +121,7 @@ describe('test/oss.test.js', () => {
           .expect(function(res) {
             lastUploadFileName = res.body.name;
             assert(typeof res.body.name === 'string');
-            assert(/^http:\/\/egg\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/.test(res.body.url));
+            assert(/^https:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
             assert(res.body.res.status === 200);
             done();
           })
@@ -176,7 +174,7 @@ describe('test/oss.test.js', () => {
         .expect(function(res) {
           lastUploadFileName = res.body.name;
           assert(typeof res.body.name === 'string');
-          assert(/^http:\/\/egg\-oss\-test\-bucket\-test99.oss\-test.aliyun\-inc.com/.test(res.body.url));
+          assert(/^https?:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
           assert(res.body.res.status === 200);
           done();
         })
