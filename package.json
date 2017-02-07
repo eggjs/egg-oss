@@ -5,6 +5,13 @@
   "eggPlugin": {
     "name": "oss"
   },
+  "files": [
+    "app",
+    "lib",
+    "config",
+    "agent.js",
+    "app.js"
+  ],
   "keywords": [
     "egg",
     "egg-plugin",
