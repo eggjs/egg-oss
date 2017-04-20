@@ -5,6 +5,6 @@ exports.oss = {
   client: {
     accessKeyId: 'id',
     accessKeySecret: 'secret',
-    endpoint: 'http://oss.aliyun.com',
+    endpoint: 'https://oss.aliyun.com',
   },
 };

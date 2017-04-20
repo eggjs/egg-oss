@@ -3,7 +3,6 @@
 const path = require('path');
 const pedding = require('pedding');
 const mm = require('egg-mock');
-const request = require('supertest');
 const ossConfig = require('./fixtures/apps/oss/config/config.default').oss.client;
 const assert = require('assert');
 
@@ -67,7 +66,7 @@ describe('test/oss.test.js', () => {
     });
 
     it('should be injected correctly', function(done) {
-      request(app.callback())
+      app.httpRequest(app.callback())
         .get('/')
         .expect({
           app: true,
@@ -79,7 +78,7 @@ describe('test/oss.test.js', () => {
 
     it('should upload file stream to oss', function(done) {
       done = pedding(2, done);
-      request(app.callback())
+      app.httpRequest(app.callback())
         .get('/uploadtest')
         .expect(function(res) {
           lastUploadFileName = res.body.name;
@@ -97,7 +96,7 @@ describe('test/oss.test.js', () => {
       });
       app.ready(() => {
         done = pedding(2, done);
-        request(app.callback())
+        app.httpRequest(app.callback())
           .get('/uploadtest')
           .expect(function(res) {
             lastUploadFileName = res.body.name;
@@ -116,7 +115,7 @@ describe('test/oss.test.js', () => {
         baseDir: 'apps/oss-cluster',
       });
       app.ready(() => {
-        request(app.callback())
+        app.httpRequest(app.callback())
           .get('/uploadtest')
           .expect(function(res) {
             lastUploadFileName = res.body.name;
@@ -145,7 +144,7 @@ describe('test/oss.test.js', () => {
     });
 
     it('should work', function(done) {
-      request(app)
+      app.httpRequest(app)
         .get('/agent')
         .expect(200, 'OK', done);
     });
@@ -165,11 +164,12 @@ describe('test/oss.test.js', () => {
       if (lastUploadFileName) {
         yield app.oss.get('oss2').delete(lastUploadFileName);
       }
+      yield app.close();
     });
 
     it('should upload file stream to oss', function(done) {
       done = pedding(2, done);
-      request(app.callback())
+      app.httpRequest(app.callback())
         .get('/uploadtest')
         .expect(function(res) {
           lastUploadFileName = res.body.name;
@@ -179,6 +179,44 @@ describe('test/oss.test.js', () => {
           done();
         })
         .expect(200, done);
+    });
+  });
+
+  describe('endpoint with http', () => {
+    let app;
+    before(function* () {
+      app = mm.app({
+        baseDir: 'apps/oss-endpoint-http',
+      });
+      yield app.ready();
+    });
+
+    after(function* () {
+      yield app.close();
+    });
+
+    it('should set http', function* () {
+      assert(app.oss.options.endpoint.hostname === 'oss.aliyun.com');
+      assert(app.oss.options.endpoint.protocol === 'http:');
+    });
+  });
+
+  describe('endpoint with https', () => {
+    let app;
+    before(function* () {
+      app = mm.app({
+        baseDir: 'apps/oss-endpoint-https',
+      });
+      yield app.ready();
+    });
+
+    after(function* () {
+      yield app.close();
+    });
+
+    it('should set https', function* () {
+      assert(app.oss.options.endpoint.hostname === 'oss.aliyun.com');
+      assert(app.oss.options.endpoint.protocol === 'https:');
     });
   });
 });

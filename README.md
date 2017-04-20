@@ -20,9 +20,7 @@
 [download-image]: https://img.shields.io/npm/dm/egg-oss.svg?style=flat-square
 [download-url]: https://npmjs.org/package/egg-oss
 
-<!--
-Description here.
--->
+[OSS](https://cn.aliyun.com/product/oss) plugin for egg
 
 ## Install
 
@@ -35,7 +33,11 @@ $ npm i egg-oss
 To enable oss plugin, you should change `${baseDir}/config/plugin.js`
 
 ```js
-exports.oss = true;
+// config/plugin.js
+exports.oss = {
+  enable: true,
+  package: 'egg-oss',
+};
 ```
 
 Then fill in nessary information like OSS's `bucket`, `accessKeyId`, `accessKeySecret` in `${baseDir}/config/config.{env}.js`
@@ -170,7 +172,6 @@ module.exports = function (app) {
   const bucket3 = app.oss.createInstance(app.config.bucket3);
 }
 ```
-
 
 ## Questions & Suggestions
 
