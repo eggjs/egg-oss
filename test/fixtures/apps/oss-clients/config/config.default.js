@@ -2,6 +2,7 @@
 
 const config = Object.assign({}, require('../../../../config'));
 
+exports.keys = '123';
 exports.oss = {
   clients: {
     oss1: {

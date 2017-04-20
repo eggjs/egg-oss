@@ -1,37 +1,36 @@
 {
   "name": "egg-oss",
   "version": "1.0.1",
-  "description": "oss plugin for egg",
+  "description": "OSS plugin for egg",
   "eggPlugin": {
     "name": "oss"
   },
   "files": [
     "app",
-    "lib",
     "config",
     "agent.js",
+    "lib",
     "app.js"
   ],
   "keywords": [
     "egg",
     "egg-plugin",
-    "eggPlugin"
+    "eggPlugin",
+    "oss"
   ],
   "dependencies": {
     "ali-oss": "^4.8.0"
   },
   "devDependencies": {
-    "autod": "^2.7.1",
+    "autod": "^2.8.0",
     "co": "^4.6.0",
-    "egg": "^0.9.0",
-    "egg-bin": "^2.0.2",
-    "egg-mock": "^2.3.1",
-    "eslint": "^3.14.1",
+    "egg": "^1.1.0",
+    "egg-bin": "^3.3.0",
+    "egg-mock": "^3.4.0",
+    "eslint": "^3.19.0",
     "eslint-config-egg": "^3.2.0",
     "is-type-of": "^1.0.0",
-    "pedding": "^1.1.0",
-    "supertest": "^3.0.0",
-    "urllib": "2"
+    "pedding": "^1.1.0"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -42,7 +41,8 @@
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
-    "ci": "npm run lint && npm run cov"
+    "pkgfiles": "egg-bin pkgfiles",
+    "ci": "egg-bin pkgfiles --check && npm run lint && npm run cov"
   },
   "repository": {
     "type": "git",
