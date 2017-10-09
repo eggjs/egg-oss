@@ -97,6 +97,10 @@ describe('test/oss.test.js', () => {
         })
         .expect(200);
     });
+
+    it('should pass httpclient', function* () {
+      assert(app.oss.urllib === app.httpclient);
+    });
   });
 
   describe('oss not init', () => {
@@ -243,4 +247,28 @@ describe('test/oss.test.js', () => {
       assert(app.oss.options.endpoint.protocol === 'https:');
     });
   });
+
+  describe('oss sts', () => {
+    let app;
+    let lastUploadFileName;
+    before(function* () {
+      app = mm.app({
+        baseDir: 'apps/oss-sts',
+      });
+      yield app.ready();
+    });
+    after(function* () {
+      if (lastUploadFileName) {
+        yield app.oss.delete(lastUploadFileName);
+      }
+      yield app.close();
+    });
+
+    it('should assumeRole', function* () {
+      yield app.httpRequest()
+        .get('/assume-role')
+        .expect(200);
+    });
+  });
+
 });

@@ -42,7 +42,7 @@ exports.oss = {
 
 Then fill in nessary information like OSS's `bucket`, `accessKeyId`, `accessKeySecret` in `${baseDir}/config/config.{env}.js`
 
-Mention, `egg-oss` support normal oss client and oss cluster client, based on [ali-oss](https://github.com/aliyun/oss-nodejs-sdk):
+Mention, `egg-oss` support normal oss client and oss cluster client, based on [ali-oss](https://github.com/ali-sdk/ali-oss):
 
 ```js
 // normal oss bucket
@@ -71,6 +71,15 @@ exports.oss = {
     }],
     schedule: 'masterSlave', //default is `roundRobin`
     timeout: '60s',
+  },
+};
+
+// if config.sts == true, oss will create STS client
+exports.oss = {
+  client: {
+    sts: true,
+    accessKeyId: 'your access key',
+    accessKeySecret: 'your access secret',
   },
 };
 ```
