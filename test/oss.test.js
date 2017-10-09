@@ -1,13 +1,26 @@
 'use strict';
 
 const path = require('path');
-const pedding = require('pedding');
 const mm = require('egg-mock');
 const ossConfig = require('./fixtures/apps/oss/config/config.default').oss.client;
 const assert = require('assert');
 
 describe('test/oss.test.js', () => {
   afterEach(mm.restore);
+
+  it('should throw error when missing endpoint or region', function* () {
+    const app = mm.app({
+      baseDir: 'apps/oss-missing-config',
+    });
+    try {
+      yield app.ready();
+      throw new Error('should not run');
+    } catch (err) {
+      assert(err.message === '[egg-oss] Must set `accessKeyId` and `accessKeySecret` in oss\'s config');
+    } finally {
+      yield app.close();
+    }
+  });
 
   describe('oss', () => {
     let app;
@@ -17,7 +30,8 @@ describe('test/oss.test.js', () => {
         baseDir: 'apps/oss',
       });
       yield app.ready();
-
+    });
+    before(function* () {
       const bucket = ossConfig.bucket;
       // const buckets = yield store.listBuckets();
       try {
@@ -34,7 +48,6 @@ describe('test/oss.test.js', () => {
         }
       }
     });
-
     after(function* () {
       if (lastUploadFileName) {
         yield app.oss.delete(lastUploadFileName);
@@ -48,14 +61,11 @@ describe('test/oss.test.js', () => {
       assert(result.res.status === 200);
     });
 
-    it.skip('should throw error when missing endpoint or region', function(done) {
-      const app = mm.app({
-        baseDir: 'apps/oss-missing-config',
-      });
-      app.on('error', err => {
-        assert(err.message === '[egg-oss] Must set `accessKeyId` and `accessKeySecret` in oss\'s config');
-        done();
-      });
+    it('should return promise', function* () {
+      const p = app.oss.put(path.basename(__filename), __filename);
+      assert(typeof p.then === 'function');
+      const result = yield p;
+      assert(result.url);
     });
 
     it('should be config correctly', function* () {
@@ -65,101 +75,119 @@ describe('test/oss.test.js', () => {
       assert(typeof config.bucket === 'string');
     });
 
-    it('should be injected correctly', function(done) {
-      app.httpRequest(app.callback())
+    it('should be injected correctly', function* () {
+      yield app.httpRequest()
         .get('/')
         .expect({
           app: true,
           ctx: true,
           putBucket: true,
         })
-        .expect(200, done);
+        .expect(200);
     });
 
-    it('should upload file stream to oss', function(done) {
-      done = pedding(2, done);
-      app.httpRequest(app.callback())
+    it('should upload file stream to oss', function* () {
+      yield app.httpRequest()
         .get('/uploadtest')
-        .expect(function(res) {
+        .expect(res => {
           lastUploadFileName = res.body.name;
           assert(typeof res.body.name === 'string');
           assert(/^https?:\/\/egg\-oss\-test-bucket\.\w+/.test(res.body.url));
           assert(res.body.res.status === 200);
-          done();
         })
-        .expect(200, done);
+        .expect(200);
     });
+  });
 
-    it('should upload file stream to oss using custom init oss', function(done) {
-      const app = mm.app({
+  describe('oss not init', () => {
+    let app;
+    let lastUploadFileName;
+    before(function* () {
+      app = mm.app({
         baseDir: 'apps/oss-not-init',
       });
-      app.ready(() => {
-        done = pedding(2, done);
-        app.httpRequest(app.callback())
-          .get('/uploadtest')
-          .expect(function(res) {
-            lastUploadFileName = res.body.name;
-            assert(typeof res.body.name === 'string');
-            assert(/^https?:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
-            assert(res.body.res.status === 200);
-            done();
-          })
-          .expect(200, done);
-      });
+      yield app.ready();
+    });
+    after(function* () {
+      if (lastUploadFileName) {
+        yield app.uploader.delete(lastUploadFileName);
+      }
+    });
+    after(function* () {
+      yield app.close();
     });
 
-    it('should upload file stream to cluster oss', function(done) {
-      done = pedding(2, done);
+    it('should upload file stream to cluster oss', function* () {
+      yield app.httpRequest()
+        .get('/uploadtest')
+        .expect(function(res) {
+          lastUploadFileName = res.body.name;
+          assert(typeof res.body.name === 'string');
+          assert(/^https?:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
+          assert(res.body.res.status === 200);
+        })
+        .expect(200);
+    });
+  });
+
+  describe('oss cluster', () => {
+    let app;
+    let lastUploadFileName;
+    before(function* () {
       app = mm.app({
         baseDir: 'apps/oss-cluster',
       });
-      app.ready(() => {
-        app.httpRequest(app.callback())
-          .get('/uploadtest')
-          .expect(function(res) {
-            lastUploadFileName = res.body.name;
-            assert(typeof res.body.name === 'string');
-            assert(/^https:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
-            assert(res.body.res.status === 200);
-            done();
-          })
-          .expect(200, done);
-      });
+      yield app.ready();
+    });
+    after(function* () {
+      if (lastUploadFileName) {
+        yield app.oss.delete(lastUploadFileName);
+      }
+      yield app.close();
+    });
+
+    it('should upload file stream to cluster oss', function* () {
+      yield app.httpRequest()
+        .get('/uploadtest')
+        .expect(function(res) {
+          lastUploadFileName = res.body.name;
+          assert(typeof res.body.name === 'string');
+          assert(/^https:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
+          assert(res.body.res.status === 200);
+        })
+        .expect(200);
     });
   });
 
   describe('oss in agent', function() {
     let app;
-
-    before(function(done) {
+    before(function* () {
       app = mm.cluster({
         baseDir: 'apps/oss-agent',
       });
-      app.ready(done);
+      yield app.ready();
+    });
+    after(function* () {
+      yield app.close();
     });
 
-    after(function() {
-      app.end();
-    });
-
-    it('should work', function(done) {
-      app.httpRequest(app)
+    it('should work', function* () {
+      yield app.httpRequest()
         .get('/agent')
-        .expect(200, 'OK', done);
+        .expect('OK')
+        .expect(200);
     });
   });
 
   describe('oss with clients', () => {
     let app;
     let lastUploadFileName;
-    before(function(done) {
+    before(function* () {
       app = mm.app({
         baseDir: 'apps/oss-clients',
       });
-      app.ready(done);
+      yield app.ready();
     });
-
     after(function* () {
       if (lastUploadFileName) {
         yield app.oss.get('oss2').delete(lastUploadFileName);
@@ -167,18 +195,16 @@ describe('test/oss.test.js', () => {
       yield app.close();
     });
 
-    it('should upload file stream to oss', function(done) {
-      done = pedding(2, done);
-      app.httpRequest(app.callback())
+    it('should upload file stream to oss', function* () {
+      yield app.httpRequest()
         .get('/uploadtest')
         .expect(function(res) {
           lastUploadFileName = res.body.name;
           assert(typeof res.body.name === 'string');
           assert(/^https?:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
           assert(res.body.res.status === 200);
-          done();
         })
-        .expect(200, done);
+        .expect(200);
     });
   });
 
@@ -190,7 +216,6 @@ describe('test/oss.test.js', () => {
       });
       yield app.ready();
     });
-
     after(function* () {
       yield app.close();
     });
@@ -209,7 +234,6 @@ describe('test/oss.test.js', () => {
       });
       yield app.ready();
     });
-
     after(function* () {
       yield app.close();
     });
