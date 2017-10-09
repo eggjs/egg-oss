@@ -10,7 +10,7 @@ module.exports = function(app) {
     this.body = {
       app: is.object(this.app.oss),
       ctx: is.object(this.oss),
-      putBucket: is.generatorFunction(this.oss.putBucket),
+      putBucket: is.promise(this.oss.putBucket()),
     };
   });
 
