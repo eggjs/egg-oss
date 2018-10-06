@@ -19,20 +19,20 @@
     "oss"
   ],
   "dependencies": {
-    "ali-oss": "^4.10.1"
+    "ali-oss": "^6.0.1"
   },
   "devDependencies": {
-    "autod": "^2.9.0",
+    "autod": "^3.0.1",
     "co": "^4.6.0",
-    "egg": "^1.9.0",
-    "egg-bin": "^4.3.3",
-    "egg-mock": "^3.12.2",
-    "eslint": "^4.8.0",
-    "eslint-config-egg": "^5.1.1",
+    "egg": "^2.11.2",
+    "egg-bin": "^4.9.0",
+    "egg-mock": "^3.20.1",
+    "eslint": "^5.6.1",
+    "eslint-config-egg": "^7.1.0",
     "is-type-of": "^1.0.0"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "scripts": {
     "autod": "autod",
