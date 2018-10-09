@@ -15,6 +15,5 @@ module.exports = {
     'eslint-config-egg',
   ],
   exclude: [
-    './test/fixtures',
   ],
 }
