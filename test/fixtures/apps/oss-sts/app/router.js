@@ -17,9 +17,9 @@ module.exports = function(app) {
     Version: '1',
   };
 
-  app.get('/assume-role', function* () {
-    const result = yield app.oss.assumeRole(roleArn, policy);
+  app.get('/assume-role', async ctx => {
+    const result = await app.oss.assumeRole(roleArn, policy);
     assert(result.res.status === 200);
-    this.body = 'done';
+    ctx.body = 'done';
   });
 };

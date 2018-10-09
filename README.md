@@ -98,39 +98,43 @@ You can aquire oss instance on `app` or `ctx`.
 
 ```js
 const path = require('path');
+const Controller = require('egg').Controller;
 
 // upload a file in controller
-module.exports = function*() {
-  const parts = this.multipart();
-  let object;
-  let part;
-  part = yield parts;
-  while (part) {
-    if (part.length) {
-      // arrays are busboy fields
-      console.log('field: ' + part[0]);
-      console.log('value: ' + part[1]);
-      console.log('valueTruncated: ' + part[2]);
-      console.log('fieldnameTruncated: ' + part[3]);
-    } else {
-      // otherwise, it's a stream
-      console.log('field: ' + part.fieldname);
-      console.log('filename: ' + part.filename);
-      console.log('encoding: ' + part.encoding);
-      console.log('mime: ' + part.mime);
-      // file handle
-      object = yield this.oss.put('egg-oss-demo-' + part.filename, part);
+module.exports = class extends Controller {
+  async upload() {
+    const ctx = this.ctx;
+    const parts = ctx.multipart();
+    let object;
+    let part;
+    part = await parts();
+    while (part) {
+      if (part.length) {
+        // arrays are busboy fields
+        console.log('field: ' + part[0]);
+        console.log('value: ' + part[1]);
+        console.log('valueTruncated: ' + part[2]);
+        console.log('fieldnameTruncated: ' + part[3]);
+      } else {
+        // otherwise, it's a stream
+        console.log('field: ' + part.fieldname);
+        console.log('filename: ' + part.filename);
+        console.log('encoding: ' + part.encoding);
+        console.log('mime: ' + part.mime);
+        // file handle
+        object = await ctx.oss.put('egg-oss-demo-' + part.filename, part);
+      }
+      part = await parts();
     }
-    part = yield parts;
+    console.log('and we are done parsing the form!');
+    if (object) {
+      console.log('get oss object: %j', object);
+      ctx.unsafeRedirect(object.url);
+    } else {
+      ctx.body = 'please select a file to upload！';
+    }
   }
-  console.log('and we are done parsing the form!');
-  if (object) {
-    console.log('get oss object: %j', object);
-    this.unsafeRedirect(object.url);
-  } else {
-    this.body = 'please select a file to upload！';
-  }
-}
+};
 ```
 
 To learn OSS client API, please check [oss document](https://github.com/ali-sdk/ali-oss)。

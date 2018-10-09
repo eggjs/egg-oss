@@ -8,34 +8,34 @@ const assert = require('assert');
 describe('test/oss.test.js', () => {
   afterEach(mm.restore);
 
-  it('should throw error when missing endpoint or region', function* () {
+  it('should throw error when missing endpoint or region', async () => {
     const app = mm.app({
       baseDir: 'apps/oss-missing-config',
     });
     try {
-      yield app.ready();
+      await app.ready();
       throw new Error('should not run');
     } catch (err) {
       assert(err.message === '[egg-oss] Must set `accessKeyId` and `accessKeySecret` in oss\'s config');
     } finally {
-      yield app.close();
+      await app.close();
     }
   });
 
   describe('oss', () => {
     let app;
     let lastUploadFileName;
-    before(function* () {
+    before(async () => {
       app = mm.app({
         baseDir: 'apps/oss',
       });
-      yield app.ready();
+      await app.ready();
     });
-    before(function* () {
+    before(async () => {
       const bucket = ossConfig.bucket;
-      // const buckets = yield store.listBuckets();
+      // const buckets = await store.listBuckets();
       try {
-        const result = yield app.oss.putBucket(bucket, ossConfig.region);
+        const result = await app.oss.putBucket(bucket, ossConfig.region);
         assert.equal(result.bucket, bucket);
         assert.equal(result.res.status, 200);
       } catch (err) {
@@ -48,35 +48,35 @@ describe('test/oss.test.js', () => {
         }
       }
     });
-    after(function* () {
+    after(async () => {
       if (lastUploadFileName) {
-        yield app.oss.delete(lastUploadFileName);
+        await app.oss.delete(lastUploadFileName);
       }
-      yield app.close();
+      await app.close();
     });
 
-    it('should app.oss put file ok', function* () {
-      const result = yield app.oss.put(path.basename(__filename), __filename);
+    it('should app.oss put file ok', async () => {
+      const result = await app.oss.put(path.basename(__filename), __filename);
       assert(result.url);
       assert(result.res.status === 200);
     });
 
-    it('should return promise', function* () {
+    it('should return promise', async () => {
       const p = app.oss.put(path.basename(__filename), __filename);
       assert(typeof p.then === 'function');
-      const result = yield p;
+      const result = await p;
       assert(result.url);
     });
 
-    it('should be config correctly', function* () {
+    it('should be config correctly', async () => {
       const config = app.config.oss.client;
       assert(typeof config.accessKeyId === 'string');
       assert(typeof config.accessKeySecret === 'string');
       assert(typeof config.bucket === 'string');
     });
 
-    it('should be injected correctly', function* () {
-      yield app.httpRequest()
+    it('should be injected correctly', async () => {
+      await app.httpRequest()
         .get('/')
         .expect({
           app: true,
@@ -86,8 +86,8 @@ describe('test/oss.test.js', () => {
         .expect(200);
     });
 
-    it('should upload file stream to oss', function* () {
-      yield app.httpRequest()
+    it('should upload file stream to oss', async () => {
+      await app.httpRequest()
         .get('/uploadtest')
         .expect(res => {
           lastUploadFileName = res.body.name;
@@ -98,7 +98,7 @@ describe('test/oss.test.js', () => {
         .expect(200);
     });
 
-    it('should pass httpclient', function* () {
+    it('should pass httpclient', async () => {
       assert(app.oss.urllib === app.httpclient);
     });
   });
@@ -106,23 +106,23 @@ describe('test/oss.test.js', () => {
   describe('oss not init', () => {
     let app;
     let lastUploadFileName;
-    before(function* () {
+    before(async () => {
       app = mm.app({
         baseDir: 'apps/oss-not-init',
       });
-      yield app.ready();
+      await app.ready();
     });
-    after(function* () {
+    after(async () => {
       if (lastUploadFileName) {
-        yield app.uploader.delete(lastUploadFileName);
+        await app.uploader.delete(lastUploadFileName);
       }
     });
-    after(function* () {
-      yield app.close();
+    after(async () => {
+      await app.close();
     });
 
-    it('should upload file stream to cluster oss', function* () {
-      yield app.httpRequest()
+    it('should upload file stream to cluster oss', async () => {
+      await app.httpRequest()
         .get('/uploadtest')
         .expect(function(res) {
           lastUploadFileName = res.body.name;
@@ -137,21 +137,21 @@ describe('test/oss.test.js', () => {
   describe('oss cluster', () => {
     let app;
     let lastUploadFileName;
-    before(function* () {
+    before(async () => {
       app = mm.app({
         baseDir: 'apps/oss-cluster',
       });
-      yield app.ready();
+      await app.ready();
     });
-    after(function* () {
+    after(async () => {
       if (lastUploadFileName) {
-        yield app.oss.delete(lastUploadFileName);
+        await app.oss.delete(lastUploadFileName);
       }
-      yield app.close();
+      await app.close();
     });
 
-    it('should upload file stream to cluster oss', function* () {
-      yield app.httpRequest()
+    it('should upload file stream to cluster oss', async () => {
+      await app.httpRequest()
         .get('/uploadtest')
         .expect(function(res) {
           lastUploadFileName = res.body.name;
@@ -165,18 +165,18 @@ describe('test/oss.test.js', () => {
 
   describe('oss in agent', function() {
     let app;
-    before(function* () {
+    before(async () => {
       app = mm.cluster({
         baseDir: 'apps/oss-agent',
       });
-      yield app.ready();
+      await app.ready();
     });
-    after(function* () {
-      yield app.close();
+    after(async () => {
+      await app.close();
     });
 
-    it('should work', function* () {
-      yield app.httpRequest()
+    it('should work', async () => {
+      await app.httpRequest()
         .get('/agent')
         .expect('OK')
         .expect(200);
@@ -186,21 +186,21 @@ describe('test/oss.test.js', () => {
   describe('oss with clients', () => {
     let app;
     let lastUploadFileName;
-    before(function* () {
+    before(async () => {
       app = mm.app({
         baseDir: 'apps/oss-clients',
       });
-      yield app.ready();
+      await app.ready();
     });
-    after(function* () {
+    after(async () => {
       if (lastUploadFileName) {
-        yield app.oss.get('oss2').delete(lastUploadFileName);
+        await app.oss.get('oss2').delete(lastUploadFileName);
       }
-      yield app.close();
+      await app.close();
     });
 
-    it('should upload file stream to oss', function* () {
-      yield app.httpRequest()
+    it('should upload file stream to oss', async () => {
+      await app.httpRequest()
         .get('/uploadtest')
         .expect(function(res) {
           lastUploadFileName = res.body.name;
@@ -214,17 +214,17 @@ describe('test/oss.test.js', () => {
 
   describe('endpoint with http', () => {
     let app;
-    before(function* () {
+    before(async () => {
       app = mm.app({
         baseDir: 'apps/oss-endpoint-http',
       });
-      yield app.ready();
+      await app.ready();
     });
-    after(function* () {
-      yield app.close();
+    after(async () => {
+      await app.close();
     });
 
-    it('should set http', function* () {
+    it('should set http', async () => {
       assert(app.oss.options.endpoint.hostname === 'oss.aliyun.com');
       assert(app.oss.options.endpoint.protocol === 'http:');
     });
@@ -232,17 +232,17 @@ describe('test/oss.test.js', () => {
 
   describe('endpoint with https', () => {
     let app;
-    before(function* () {
+    before(async () => {
       app = mm.app({
         baseDir: 'apps/oss-endpoint-https',
       });
-      yield app.ready();
+      await app.ready();
     });
-    after(function* () {
-      yield app.close();
+    after(async () => {
+      await app.close();
     });
 
-    it('should set https', function* () {
+    it('should set https', async () => {
       assert(app.oss.options.endpoint.hostname === 'oss.aliyun.com');
       assert(app.oss.options.endpoint.protocol === 'https:');
     });
@@ -251,21 +251,21 @@ describe('test/oss.test.js', () => {
   describe('oss sts', () => {
     let app;
     let lastUploadFileName;
-    before(function* () {
+    before(async () => {
       app = mm.app({
         baseDir: 'apps/oss-sts',
       });
-      yield app.ready();
+      await app.ready();
     });
-    after(function* () {
+    after(async () => {
       if (lastUploadFileName) {
-        yield app.oss.delete(lastUploadFileName);
+        await app.oss.delete(lastUploadFileName);
       }
-      yield app.close();
+      await app.close();
     });
 
-    it('should assumeRole', function* () {
-      yield app.httpRequest()
+    it('should assumeRole', async () => {
+      await app.httpRequest()
         .get('/assume-role')
         .expect(200);
     });
