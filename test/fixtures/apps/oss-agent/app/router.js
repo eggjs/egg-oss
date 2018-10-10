@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = app => {
-  app.get('/agent', function* () {
-    yield wrapPromise(app);
-    this.body = 'OK';
+  app.get('/agent', async ctx => {
+    await wrapPromise(app);
+    ctx.body = 'OK';
   });
 };
 

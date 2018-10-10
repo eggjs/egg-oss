@@ -96,41 +96,35 @@ exports.oss = {
 
 You can aquire oss instance on `app` or `ctx`.
 
+The example below will upload file to oss using [the `file` mode of egg-multipart](https://github.com/eggjs/egg-multipart#enable-file-mode-on-config).
+
 ```js
 const path = require('path');
+const Controller = require('egg').Controller;
+const fs = require('mz/fs');
 
 // upload a file in controller
-module.exports = function*() {
-  const parts = this.multipart();
-  let object;
-  let part;
-  part = yield parts;
-  while (part) {
-    if (part.length) {
-      // arrays are busboy fields
-      console.log('field: ' + part[0]);
-      console.log('value: ' + part[1]);
-      console.log('valueTruncated: ' + part[2]);
-      console.log('fieldnameTruncated: ' + part[3]);
-    } else {
-      // otherwise, it's a stream
-      console.log('field: ' + part.fieldname);
-      console.log('filename: ' + part.filename);
-      console.log('encoding: ' + part.encoding);
-      console.log('mime: ' + part.mime);
-      // file handle
-      object = yield this.oss.put('egg-oss-demo-' + part.filename, part);
+module.exports = class extends Controller {
+  async upload() {
+    const ctx = this.ctx;
+
+    const file = ctx.request.files[0];
+    const name = 'egg-oss-demo/' + path.basename(file.filename);
+    let result;
+    try {
+      result = await ctx.oss.put(name, file.filepath);
+    } finally {
+      await fs.unlink(file.filepath);
     }
-    part = yield parts;
+
+    if (result) {
+      console.log('get oss object: %j', object);
+      ctx.unsafeRedirect(result.url);
+    } else {
+      ctx.body = 'please select a file to upload！';
+    }
   }
-  console.log('and we are done parsing the form!');
-  if (object) {
-    console.log('get oss object: %j', object);
-    this.unsafeRedirect(object.url);
-  } else {
-    this.body = 'please select a file to upload！';
-  }
-}
+};
 ```
 
 To learn OSS client API, please check [oss document](https://github.com/ali-sdk/ali-oss)。
