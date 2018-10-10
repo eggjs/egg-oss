@@ -1,4 +1,13 @@
 
+2.0.0 / 2018-10-10
+==================
+
+**features**
+  * [[`52c1043`](http://github.com/eggjs/egg-oss/commit/52c1043bff45281fbc6dd236ad3ee2abe52e62b9)] - feat: [BREAKING CHANGE] upgrade ali-oss to support async function (#6) (Haoliang Gao <<sakura9515@gmail.com>>)
+
+**others**
+  * [[`c2a67f6`](http://github.com/eggjs/egg-oss/commit/c2a67f67a451f525930a786d466c124dcd01631f)] - test: update secure key (#7) (Haoliang Gao <<sakura9515@gmail.com>>)
+
 1.1.0 / 2017-10-12
 ==================
 
