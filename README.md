@@ -96,40 +96,30 @@ exports.oss = {
 
 You can aquire oss instance on `app` or `ctx`.
 
+The example below will upload file to oss using [the `file` mode of egg-multipart](https://github.com/eggjs/egg-multipart#enable-file-mode-on-config).
+
 ```js
 const path = require('path');
 const Controller = require('egg').Controller;
+const fs = require('mz/fs');
 
 // upload a file in controller
 module.exports = class extends Controller {
   async upload() {
     const ctx = this.ctx;
-    const parts = ctx.multipart();
-    let object;
-    let part;
-    part = await parts();
-    while (part) {
-      if (part.length) {
-        // arrays are busboy fields
-        console.log('field: ' + part[0]);
-        console.log('value: ' + part[1]);
-        console.log('valueTruncated: ' + part[2]);
-        console.log('fieldnameTruncated: ' + part[3]);
-      } else {
-        // otherwise, it's a stream
-        console.log('field: ' + part.fieldname);
-        console.log('filename: ' + part.filename);
-        console.log('encoding: ' + part.encoding);
-        console.log('mime: ' + part.mime);
-        // file handle
-        object = await ctx.oss.put('egg-oss-demo-' + part.filename, part);
-      }
-      part = await parts();
+
+    const file = ctx.request.files[0];
+    const name = 'egg-oss-demo/' + path.basename(file.filename);
+    let result;
+    try {
+      result = await ctx.oss.put(name, file.filepath);
+    } finally {
+      await fs.unlink(file.filepath);
     }
-    console.log('and we are done parsing the form!');
-    if (object) {
+
+    if (result) {
       console.log('get oss object: %j', object);
-      ctx.unsafeRedirect(object.url);
+      ctx.unsafeRedirect(result.url);
     } else {
       ctx.body = 'please select a file to upload！';
     }
