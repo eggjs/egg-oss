@@ -178,7 +178,23 @@ module.exports = function (app) {
 
 ## Development
 
+Create `.env` file for environment that testcase need.
 
+```ini
+ALI_SDK_OSS_REGION=oss-cn-hangzhou
+ALI_SDK_OSS_ENDPOINT=http://oss-cn-hangzhou.aliyuncs.com
+ALI_SDK_OSS_ID=
+ALI_SDK_OSS_SECRET=
+ALI_SDK_OSS_BUCKET=
+ALI_SDK_STS_ID=
+ALI_SDK_STS_SECRET=
+ALI_SDK_STS_BUCKET=
+ALI_SDK_STS_ROLE=
+```
+
+And run `npm test`
+
+The key is saved in [link](https://sharelock.io/1/MJITmvvEAchnIBWfm04PdfgXJs-fzCphRTz-TiVIOMo.wKVjBx/ED9OdTKWdMbkV3OfdJNXX3xG-VductolPWQM36vIgMsfvU2_KE/1XZMzTYEoGZSrCJxERU7iThkRSbhpXB71qYPPbmNbtRHfONL2J/4LB-xlFm82ZoAopEaXriN7IE9O030x3twhCtc0o69Rl5RdXj7b/YjDPa2JHQK7MUDkHskE4AAkmDXqlwoVtbT55bLYjb6tP2uvKtb/LLk1Gdwgjq3ihB1CePk8J3rWWe_-0EwxiLrjoV2tCTgRv18u1B/_AQY3Ui4TM3kQFp_8hfBCMidToOlYgQUwRNQff_Hlc9Ygl_BY6/4vhOrHyFwBg-5_qcAp-NaMeYQ8UN2wdveYQFzdv9CiKO3_Jhdz/JEdNoDO2j9rhRzUdH_c9XaguZ3kO145VRhNxj8WJghpVcmVfJZ/GYv4V-NNF-4Zic0VTtJQ_zs9iJRqHhAxI7GOEOvbaDTzIS2DFI/N5Yc-IcK4d96een8mwzrD81PZmQRYB-X94jMTVIuuDoFrPSaPB/3ks_eN1JnFyIXhshrSIBQvCtm20nyTlgvI3CjZ6mIdZBoRVDVB/e7btgHqXtuCmBgW2FNdk_eqfXDr2LFFwXzgBp5w.fwKGWMsFGx/mNYbeP11buRg) (ask @popomore), you can change the key by run `scripts/gen_env.sh`.
 
 ## Questions & Suggestions
 
