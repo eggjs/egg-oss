@@ -176,15 +176,13 @@ module.exports = function (app) {
 }
 ```
 
+## Development
+
+
+
 ## Questions & Suggestions
 
 Please open an issue [here](https://github.com/eggjs/egg/issues).
-
-## secure keys
-
-ping @fengmk2 to give you the access key!
-
-- [oss secure keys](https://sharelock.io/1/d4dxf7wWoRP2Bh1ogtu4SfP_yt735noKhBld409yX84.acpMDn/-vOrQ4j4BpkMoxKkMeEavhwwUf0d293WY0WzHWDm-iVd8jbSwL/XEd43LrRzS7qmli4oJbbX_GcmG_X4KRu9pCMARJH4n92ebbtP1/y0fqwtoyV3JnK2ZdTJ4Ynky_ZVt7RR_Ji8DhLpn2N9j-A1BabK/FxYHfdXtUUrG4nd0PzN18_W2SuEr8Eyyqc6SHpFHt3qrgdSRse/giuXaV_3igL1CipdL5F5Vy2iDxjeRb_Zt_8Xlkmg1frfQTcnfZ/sfnl9zNYqOBzjGlC8f6YI6dDvShM-o1VoKp5F_kcXok1lAiLt4/3TnriQ6YM-qcx3wL7wgHu7TbzN_-4FN3ijpVOHkIVNPXjIquxL/SfKBlmu50XnZrYetixa0fvlbrc2yIAKx7cPQUxUe33b6Ti8N8b/U_rIfAGGL_8hK4XRLMWGdVevbSbw0IHgokTm6zGvpHj9PEILtP/wGJ5l3-hW6Chr5FJYJO1Wv0H4haJGctf3K2fg40ku8sx7511qv/h8xnoUyQmM0jkRrysIAD7FcW5mplMcvIOVd_CyugoH-NZCZfE1/maLQF303M3Y5_6kLBhF_Yi3jwO-UX7pTFt_Ax_ATh6Wvvix4JC/MjK891qkm4_vumc_Y86XB6HpchO7ox4nW5m2jUJlP016sBEnMw/bKE0FaX2SQ.WSqThAUsnFO7ddCpRJuotw)
 
 ## License
 

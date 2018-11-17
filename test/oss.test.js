@@ -92,7 +92,7 @@ describe('test/oss.test.js', () => {
         .expect(res => {
           lastUploadFileName = res.body.name;
           assert(typeof res.body.name === 'string');
-          assert(/^https?:\/\/egg\-oss\-test-bucket\.\w+/.test(res.body.url));
+          assert(/^https?:\/\/egg\-oss\-unittest\.\w+/.test(res.body.url));
           assert(res.body.res.status === 200);
         })
         .expect(200);
@@ -127,7 +127,7 @@ describe('test/oss.test.js', () => {
         .expect(function(res) {
           lastUploadFileName = res.body.name;
           assert(typeof res.body.name === 'string');
-          assert(/^https?:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
+          assert(/^https?:\/\/egg\-oss\-unittest\.\w+/.test(res.body.url));
           assert(res.body.res.status === 200);
         })
         .expect(200);
@@ -156,7 +156,7 @@ describe('test/oss.test.js', () => {
         .expect(function(res) {
           lastUploadFileName = res.body.name;
           assert(typeof res.body.name === 'string');
-          assert(/^https:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
+          assert(/^https:\/\/egg\-oss\-unittest\.\w+/.test(res.body.url));
           assert(res.body.res.status === 200);
         })
         .expect(200);
@@ -205,7 +205,7 @@ describe('test/oss.test.js', () => {
         .expect(function(res) {
           lastUploadFileName = res.body.name;
           assert(typeof res.body.name === 'string');
-          assert(/^https?:\/\/egg\-oss\-test\-bucket\.\w+/.test(res.body.url));
+          assert(/^https?:\/\/egg\-oss\-unittest\.\w+/.test(res.body.url));
           assert(res.body.res.status === 200);
         })
         .expect(200);
@@ -248,9 +248,8 @@ describe('test/oss.test.js', () => {
     });
   });
 
-  describe('oss sts', () => {
+  describe.only('oss sts', () => {
     let app;
-    let lastUploadFileName;
     before(async () => {
       app = mm.app({
         baseDir: 'apps/oss-sts',
@@ -258,16 +257,38 @@ describe('test/oss.test.js', () => {
       await app.ready();
     });
     after(async () => {
-      if (lastUploadFileName) {
-        await app.oss.delete(lastUploadFileName);
-      }
       await app.close();
     });
 
     it('should assumeRole', async () => {
       await app.httpRequest()
         .get('/assume-role')
-        .expect(200);
+        .expect(200)
+        .expect(res => {
+          assert(res.body >= 0);
+        });
+    });
+  });
+
+  describe.only('oss sts clients', () => {
+    let app;
+    before(async () => {
+      app = mm.app({
+        baseDir: 'apps/oss-sts-clients',
+      });
+      await app.ready();
+    });
+    after(async () => {
+      await app.close();
+    });
+
+    it('should assumeRole', async () => {
+      await app.httpRequest()
+        .get('/assume-role')
+        .expect(200)
+        .expect(res => {
+          assert(res.body >= 0);
+        });
     });
   });
 
