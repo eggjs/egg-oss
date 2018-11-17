@@ -248,7 +248,7 @@ describe('test/oss.test.js', () => {
     });
   });
 
-  describe.only('oss sts', () => {
+  describe('oss sts', () => {
     let app;
     before(async () => {
       app = mm.app({
@@ -270,7 +270,7 @@ describe('test/oss.test.js', () => {
     });
   });
 
-  describe.only('oss sts clients', () => {
+  describe('oss sts clients', () => {
     let app;
     before(async () => {
       app = mm.app({
