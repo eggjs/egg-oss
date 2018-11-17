@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "autod": "^3.0.1",
+    "dotenv": "^6.1.0",
     "egg": "^2.11.2",
     "egg-bin": "^4.9.0",
     "egg-mock": "^3.20.1",
@@ -37,7 +38,7 @@
     "autod": "autod",
     "lint": "eslint .",
     "test": "npm run lint -- --fix && npm run test-local",
-    "test-local": "egg-bin test",
+    "test-local": "dotenv egg-bin test",
     "cov": "egg-bin cov",
     "pkgfiles": "egg-bin pkgfiles",
     "ci": "egg-bin pkgfiles --check && npm run lint && npm run cov"

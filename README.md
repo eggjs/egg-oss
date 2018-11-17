@@ -176,15 +176,29 @@ module.exports = function (app) {
 }
 ```
 
+## Development
+
+Create `.env` file for environment that testcase need.
+
+```ini
+ALI_SDK_OSS_REGION=oss-cn-hangzhou
+ALI_SDK_OSS_ENDPOINT=http://oss-cn-hangzhou.aliyuncs.com
+ALI_SDK_OSS_ID=
+ALI_SDK_OSS_SECRET=
+ALI_SDK_OSS_BUCKET=
+ALI_SDK_STS_ID=
+ALI_SDK_STS_SECRET=
+ALI_SDK_STS_BUCKET=
+ALI_SDK_STS_ROLE=
+```
+
+And run `npm test`
+
+The key is saved in [link](https://sharelock.io/1/MJITmvvEAchnIBWfm04PdfgXJs-fzCphRTz-TiVIOMo.wKVjBx/ED9OdTKWdMbkV3OfdJNXX3xG-VductolPWQM36vIgMsfvU2_KE/1XZMzTYEoGZSrCJxERU7iThkRSbhpXB71qYPPbmNbtRHfONL2J/4LB-xlFm82ZoAopEaXriN7IE9O030x3twhCtc0o69Rl5RdXj7b/YjDPa2JHQK7MUDkHskE4AAkmDXqlwoVtbT55bLYjb6tP2uvKtb/LLk1Gdwgjq3ihB1CePk8J3rWWe_-0EwxiLrjoV2tCTgRv18u1B/_AQY3Ui4TM3kQFp_8hfBCMidToOlYgQUwRNQff_Hlc9Ygl_BY6/4vhOrHyFwBg-5_qcAp-NaMeYQ8UN2wdveYQFzdv9CiKO3_Jhdz/JEdNoDO2j9rhRzUdH_c9XaguZ3kO145VRhNxj8WJghpVcmVfJZ/GYv4V-NNF-4Zic0VTtJQ_zs9iJRqHhAxI7GOEOvbaDTzIS2DFI/N5Yc-IcK4d96een8mwzrD81PZmQRYB-X94jMTVIuuDoFrPSaPB/3ks_eN1JnFyIXhshrSIBQvCtm20nyTlgvI3CjZ6mIdZBoRVDVB/e7btgHqXtuCmBgW2FNdk_eqfXDr2LFFwXzgBp5w.fwKGWMsFGx/mNYbeP11buRg) (ask @popomore), you can change the key by run `scripts/gen_env.sh`.
+
 ## Questions & Suggestions
 
 Please open an issue [here](https://github.com/eggjs/egg/issues).
-
-## secure keys
-
-ping @fengmk2 to give you the access key!
-
-- [oss secure keys](https://sharelock.io/1/d4dxf7wWoRP2Bh1ogtu4SfP_yt735noKhBld409yX84.acpMDn/-vOrQ4j4BpkMoxKkMeEavhwwUf0d293WY0WzHWDm-iVd8jbSwL/XEd43LrRzS7qmli4oJbbX_GcmG_X4KRu9pCMARJH4n92ebbtP1/y0fqwtoyV3JnK2ZdTJ4Ynky_ZVt7RR_Ji8DhLpn2N9j-A1BabK/FxYHfdXtUUrG4nd0PzN18_W2SuEr8Eyyqc6SHpFHt3qrgdSRse/giuXaV_3igL1CipdL5F5Vy2iDxjeRb_Zt_8Xlkmg1frfQTcnfZ/sfnl9zNYqOBzjGlC8f6YI6dDvShM-o1VoKp5F_kcXok1lAiLt4/3TnriQ6YM-qcx3wL7wgHu7TbzN_-4FN3ijpVOHkIVNPXjIquxL/SfKBlmu50XnZrYetixa0fvlbrc2yIAKx7cPQUxUe33b6Ti8N8b/U_rIfAGGL_8hK4XRLMWGdVevbSbw0IHgokTm6zGvpHj9PEILtP/wGJ5l3-hW6Chr5FJYJO1Wv0H4haJGctf3K2fg40ku8sx7511qv/h8xnoUyQmM0jkRrysIAD7FcW5mplMcvIOVd_CyugoH-NZCZfE1/maLQF303M3Y5_6kLBhF_Yi3jwO-UX7pTFt_Ax_ATh6Wvvix4JC/MjK891qkm4_vumc_Y86XB6HpchO7ox4nW5m2jUJlP016sBEnMw/bKE0FaX2SQ.WSqThAUsnFO7ddCpRJuotw)
 
 ## License
 

@@ -6,7 +6,7 @@ const createSTSClient = require('../../../../sts_client');
 
 module.exports = function(app) {
   app.get('/assume-role', async ctx => {
-    const result = await app.oss.assumeRole(roleArn);
+    const result = await app.oss.get('client1').assumeRole(roleArn);
     assert(result.res.status === 200);
 
     const accessKeyId = result.credentials.AccessKeyId;
