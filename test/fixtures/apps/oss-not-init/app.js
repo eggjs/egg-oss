@@ -1,5 +1,5 @@
 'use strict';
 
-module.exports = function(app) {
+module.exports = app => {
   app.uploader = app.createOss(app.config.uploader);
 };

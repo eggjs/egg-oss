@@ -27,7 +27,7 @@
     "egg": "^2.11.2",
     "egg-bin": "^4.9.0",
     "egg-mock": "^3.20.1",
-    "eslint": "^5.6.1",
+    "eslint": "^5.7.0",
     "eslint-config-egg": "^7.1.0",
     "is-type-of": "^1.2.1"
   },

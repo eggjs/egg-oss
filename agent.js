@@ -2,9 +2,14 @@
 
 const oss = require('./lib/oss');
 
-module.exports = agent => {
-  const useAgent = agent.config.oss.useAgent;
-  if (useAgent) {
-    oss(agent);
+module.exports = class {
+  constructor(agent) {
+    this.agent = agent;
+  }
+
+  configDidLoad() {
+    if (this.agent.config.oss.useAgent) {
+      oss(this.agent);
+    }
   }
 };
