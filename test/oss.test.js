@@ -292,4 +292,33 @@ describe('test/oss.test.js', () => {
     });
   });
 
+  describe('oss async load config', () => {
+    let app;
+    let lastUploadFileName;
+    before(async () => {
+      app = mm.app({
+        baseDir: 'apps/oss-async-load',
+      });
+      await app.ready();
+    });
+    after(async () => {
+      if (lastUploadFileName) {
+        await app.oss.delete(lastUploadFileName);
+      }
+      await app.close();
+    });
+
+    it('should upload file stream to oss', async () => {
+      await app.httpRequest()
+        .get('/uploadtest')
+        .expect(function(res) {
+          lastUploadFileName = res.body.name;
+          assert(typeof res.body.name === 'string');
+          assert(/^https?:\/\/egg\-oss\-unittest\.\w+/.test(res.body.url));
+          assert(res.body.res.status === 200);
+        })
+        .expect(200);
+    });
+  });
+
 });
