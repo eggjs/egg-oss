@@ -51,7 +51,7 @@ exports.oss = {
     accessKeyId: 'your access key',
     accessKeySecret: 'your access secret',
     bucket: 'your bucket name',
-    endpoint: 'oss-cn-hongkong.aliyun.com',
+    endpoint: 'oss-cn-hongkong.aliyuncs.com',
     timeout: '60s',
   },
 };
