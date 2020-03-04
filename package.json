@@ -19,7 +19,8 @@
     "oss"
   ],
   "dependencies": {
-    "ali-oss": "^6.0.1"
+    "ali-oss": "^6.0.1",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "autod": "^3.0.1",
@@ -41,7 +42,9 @@
     "test-local": "dotenv egg-bin test",
     "cov": "egg-bin cov",
     "pkgfiles": "egg-bin pkgfiles",
-    "ci": "egg-bin pkgfiles --check && npm run lint && npm run cov"
+    "ci": "egg-bin pkgfiles --check && npm run lint && npm run cov",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -52,5 +55,6 @@
   },
   "homepage": "https://github.com/eggjs/egg-oss#readme",
   "author": "dead_horse",
-  "license": "MIT"
+  "license": "MIT",
+  "snyk": true
 }
