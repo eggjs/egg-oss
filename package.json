@@ -24,7 +24,6 @@
   "devDependencies": {
     "egg": "^3.3.3",
     "egg-bin": "^5.2.0",
-    "egg-ci": "^2.1.0",
     "egg-mock": "^5.0.2",
     "eslint": "^8.26.0",
     "eslint-config-egg": "^12.1.0",
@@ -32,10 +31,6 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "ci": {
-    "version": "14, 16, 18",
-    "os": "linux"
   },
   "scripts": {
     "lint": "eslint .",

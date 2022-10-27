@@ -1,16 +1,12 @@
-'use strict';
-
 const path = require('path');
 const fs = require('fs');
 const is = require('is-type-of');
 
 module.exports = function(app) {
-
   app.get('/', async ctx => {
     ctx.body = {
       app: is.object(ctx.app.oss),
       ctx: is.object(ctx.oss),
-      putBucket: is.promise(ctx.oss.putBucket()),
     };
   });
 

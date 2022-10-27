@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const fs = require('fs');
 const is = require('is-type-of');
@@ -9,7 +7,6 @@ module.exports = function(app) {
     ctx.body = {
       app: is.object(ctx.app.oss),
       ctx: is.object(ctx.oss),
-      putBucket: is.promise(ctx.oss.putBucket()),
     };
   });
 
