@@ -1,9 +1,7 @@
-'use strict';
-
-const OSS = require('ali-oss');
+const { Client } = require('oss-client');
 
 module.exports = function createSTSClient(accessKeyId, accessKeySecret, stsToken) {
-  return new OSS({
+  return new Client({
     accessKeyId,
     accessKeySecret,
     stsToken,

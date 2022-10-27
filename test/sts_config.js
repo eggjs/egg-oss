@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   accessKeyId: process.env.ALI_SDK_STS_ID,
   accessKeySecret: process.env.ALI_SDK_STS_SECRET,

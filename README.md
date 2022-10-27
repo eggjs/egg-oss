@@ -33,7 +33,7 @@ exports.oss = {
 
 Then fill in nessary information like OSS's `bucket`, `accessKeyId`, `accessKeySecret` in `${baseDir}/config/config.{env}.js`
 
-Mention, `egg-oss` support normal oss client and oss cluster client, based on [ali-oss](https://github.com/ali-sdk/ali-oss):
+Mention, `egg-oss` support normal oss client and oss cluster client, based on [oss-client](https://github.com/node-modules/oss-client):
 
 ```js
 // normal oss bucket
@@ -118,7 +118,7 @@ module.exports = class extends Controller {
 };
 ```
 
-To learn OSS client API, please check [oss document](https://github.com/ali-sdk/ali-oss)。
+To learn OSS client API, please check [oss document](https://github.com/node-modules/oss-client)。
 
 ## Create one more OSS buckets
 

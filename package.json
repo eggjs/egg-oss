@@ -19,7 +19,7 @@
     "oss"
   ],
   "dependencies": {
-    "ali-oss": "^6.0.1"
+    "oss-client": "^1.1.0"
   },
   "devDependencies": {
     "egg": "^3.3.3",
