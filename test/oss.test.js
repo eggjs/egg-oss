@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const mm = require('egg-mock');
 const ossConfig = require('./fixtures/apps/oss/config/config.default').oss.client;
