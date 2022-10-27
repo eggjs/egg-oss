@@ -1,4 +1,17 @@
 
+3.0.0 / 2022-10-27
+==================
+
+**features**
+  * [[`cb50f24`](http://github.com/eggjs/egg-oss/commit/cb50f242769cfa45905892746fec14ba41f5bb90)] - 📦 NEW: [BREAKING] Use oss-client instead of ali-oss (#15) (fengmk2 <<fengmk2@gmail.com>>)
+
+**others**
+  * [[`0101225`](http://github.com/eggjs/egg-oss/commit/010122502e3fa3e47f0aeb4a7d4461d75956e7cf)] - refactor: use lifecycle on start process (#10) (fengmk2 <<fengmk2@gmail.com>>)
+  * [[`4659a27`](http://github.com/eggjs/egg-oss/commit/4659a27afcc944fcdfc49f4f49b23c31715bff0c)] - docs: correct example endpoint configuration (#14) (Jeff <<jeff.tian@outlook.com>>)
+  * [[`e909e0d`](http://github.com/eggjs/egg-oss/commit/e909e0dfcc5ef195f3e88a730f4f0a7efd54a43d)] - chore: update travis (#13) (TZ | 天猪 <<atian25@qq.com>>)
+  * [[`93a05ea`](http://github.com/eggjs/egg-oss/commit/93a05eabba7d0a67f38170d626971341ef92fdc0)] - test: add another client for sts clients test (#9) (Haoliang Gao <<sakura9515@gmail.com>>)
+  * [[`e1d7a11`](http://github.com/eggjs/egg-oss/commit/e1d7a11c68ea54a75bf9b39fa202f7cdd32ad855)] - test: add sts clients testcase (#8) (Haoliang Gao <<sakura9515@gmail.com>>)
+
 2.0.0 / 2018-10-10
 ==================
 
