@@ -5,12 +5,14 @@
   "eggPlugin": {
     "name": "oss"
   },
+  "types": "index.d.ts",
   "files": [
     "app",
     "config",
     "agent.js",
     "lib",
-    "app.js"
+    "app.js",
+    "index.d.ts"
   ],
   "keywords": [
     "egg",
@@ -27,18 +29,19 @@
     "egg-mock": "^5.0.2",
     "eslint": "^8.26.0",
     "eslint-config-egg": "^12.1.0",
-    "is-type-of": "^1.2.1"
+    "is-type-of": "^1.2.1",
+    "tsd": "^0.25.0"
   },
   "engines": {
     "node": ">=14.0.0"
   },
   "scripts": {
     "lint": "eslint .",
-    "test": "npm run lint -- --fix && npm run test-local",
+    "tsd": "tsd",
+    "test": "npm run lint -- --fix && npm run tsd && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
-    "pkgfiles": "egg-bin pkgfiles",
-    "ci": "egg-bin pkgfiles --check && npm run lint && npm run cov"
+    "ci": "npm run lint && npm run tsd && npm run cov"
   },
   "repository": {
     "type": "git",
