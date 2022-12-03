@@ -10,16 +10,4 @@ declare module 'egg' {
   interface Context {
     oss: Application['oss'];
   }
-
-  // interface EggAppConfig {
-  //   ddsOSS: {
-  //     cacheDir: string;
-  //     datasource: {
-  //       /** 单数据源 */
-  //       client?: DdsOSSClientConfig;
-  //       /** 多数据源 */
-  //       clients?: { [key: string]: DdsOSSClientConfig };
-  //     }
-  //   }
-  // }
 }
