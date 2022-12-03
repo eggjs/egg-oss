@@ -1,4 +1,10 @@
 
+3.1.0 / 2022-12-04
+==================
+
+**features**
+  * [[`aabc2af`](http://github.com/eggjs/egg-oss/commit/aabc2af01cdbc50928edcdc9f6bc3818887d1772)] - 📦 NEW: Support d.ts (#16) (fengmk2 <<fengmk2@gmail.com>>)
+
 3.0.0 / 2022-10-27
 ==================
 
