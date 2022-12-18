@@ -1,6 +1,7 @@
 # egg-oss
 
 [![NPM version][npm-image]][npm-url]
+[![Node.js CI](https://github.com/eggjs/egg-oss/actions/workflows/nodejs.yml/badge.svg)](https://github.com/eggjs/egg-oss/actions/workflows/nodejs.yml)
 [![Test coverage][codecov-image]][codecov-url]
 [![npm download][download-image]][download-url]
 
