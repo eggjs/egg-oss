@@ -21,7 +21,7 @@
     "oss"
   ],
   "dependencies": {
-    "oss-client": "^1.1.0"
+    "oss-client": "^2.0.0"
   },
   "devDependencies": {
     "egg": "^3.3.3",
